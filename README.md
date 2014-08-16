@@ -92,7 +92,7 @@ Documents can be read using the readDocument and readDocuments (scan) methods. Y
     /* query for a JSON path in the documents */
     collection.queryDocuments(
         collection.getSelfLink(), 
-        'SELECT * FROM books b WHERE b.author.name = "Leo Tolstoy",
+        'SELECT * FROM books b WHERE b.author.name = "Leo Tolstoy"',
         queryCallback);
 
 ```
@@ -174,7 +174,6 @@ References
 * DocumentDB server side JavaScript Tutorial
 * DocumentDB Node.js SDK reference
 * DocumentDB .NET SDK reference
-*
 
 
 
