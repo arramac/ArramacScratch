@@ -58,9 +58,9 @@ The **Response** object can be similarly used to modify the response from a stor
 
 Collection Object
 ---
-The collection object supports create, read, update and delete (CRUD) against documents in the current collection. Here's how you create a document.
+The **Collection** object supports create, read, update and delete (CRUD) against documents in the current collection. Here's how you create a document.
 
-```js
+```JavaScript
     var docToCreate = { 
         name: "artist_profile_1023",
         artist: "The Band",
@@ -75,10 +75,9 @@ The collection object supports create, read, update and delete (CRUD) against do
 
 
 ```
-
 Replacing or deleting documents is similar, except that you have to pass in the document's self link. 
 
-```js
+```JavaScript
     /* replace document transactionally */
      collection.replaceDocument(doc._self, doc, 
          function(err, docReplaced) {
@@ -87,10 +86,9 @@ Replacing or deleting documents is similar, except that you have to pass in the 
 
 
 ```
-
 Documents can be read using the readDocument and readDocuments (scan) methods. You can query documents within a collection using the DocumentDB SQL syntax. These are processed against efficiently against the index.
 
-```js
+```JavaScript
     /* query for a JSON path in the documents */
     collection.queryDocuments(
         collection.getSelfLink(), 
