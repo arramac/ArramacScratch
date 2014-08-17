@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Index</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+    <div id="main">
+        <h1 class="page-title">Index</h1>
+        <h3> </h3>
+        <section>
+            <article>
+                <h1>DocumentDB server side JavaScript SDK</h1>
+                <p>
+                    DocumentDB’s language integrated, transactional execution of JavaScript supports stored procedures, triggers and user defined functions (UDFs) written natively in JavaScript.
+                    This allows developers to write application logic which can be shipped and executed directly on the database storage partitions. JavaScript support at the server side has a
+                    number of intrinsic advantages that can be utilized to build rich applications.
+                    <ul>
+                        <li><a href="Context.html">Context</a></li>
+                        <li><a href="Request.html">Request</a></li>
+                        <li><a href="Response.html">Response</a></li>
+                        <li><a href="Collection.html">Collection</a></li>
+                    </ul>
+                </p>
+                <h2>Getting Started</h2>
+                <p>
+                    Create a DocumentDB account using the Microsoft Azure Portal and setup databases/collections using REST API or one of the supported client SDKs (.NET, Node.js, Python).
+                    The JavaScript server-side SDK documented here has no downloads - it is available on every document collection created on DocumentDB. Stored procedures referencing
+                    the server side SDK can be written in plain text and registered against the DocumentDB service again either using the REST API or one of the supported clients. 
+
+                    <ul>
+                        <li>Stored procedures can be executed directly with arguments passed in</li>
+                        <li>Triggers can be included subsequently as pre or post operations in create, replace and delete document operations</li>
+                        <li>User defined functions do not have access to the context object and are meant to be used as compute-only JavaScript.</li>
+                    </ul>
+                </p>
+                <p>
+                    To learn more, here is the DocumentDB JavaScript Tutorial. 
+                </p>
+
+                <h2>Context Object</h2>
+                <p>
+                    The <a href="Context.html">Context</a> object provides access the current collection against which database operations can be performed, as well as to the <a href="Request.html">Request</a>
+                    and <a href="Response.html">Response</a> to the JavaScript stored procedure or trigger.
+                    <pre><code class="lang-Javascript">
+    function () {
+        /* the context method can be accessed inside stored procedures and triggers*/
+        var context = getContext();
+        /* access all database operations - CRUD, query against documents in the current collection */
+        var collection = context.getCollection();
+        /* access HTTP request body and headers for the procedure */
+        var request = context.getRequest();
+        /* access HTTP response body and headers from the procedure */
+        var response = context.getResponse();
+    } </code></pre>
+                </p>
+                <h2>Request Object</h2>
+                <p>
+                    Inside the stored procedure or trigger, the <a href="Request.html">Request</a> object can be used to manipulate the request message associated with the operation. For example, here we modify the document
+                    content inside a pre-trigger used on a create.
+                </p>
+                <h2>Response Object</h2>
+                <p>
+                    The <a href="Response.html">Response</a> object can be similarly used to modify the response from a stored procedure or trigger.
+                </p>
+
+                <h2>Collection Object</h2>
+                <p>
+                    The <a href="Collection.html">Collection</a> object supports create, read, update and delete (CRUD) against documents in the current collection.
+                </p>
+                <h2>References</h2>
+                <p>
+                    <ul>
+                        <li>DocumentDB Server side JavaScript SDK Tutorial</li>
+                        <li>DocumentDB Client side Node.js SDK reference</li>
+                        <li>DocumentDB Client side .NET SDK reference</li>
+                    </ul>
+                </p>
+            </article>
+        </section>
+    </div>
+
+
+    <nav>
+        <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Collection.html">Collection</a></li><li><a href="Context.html">Context</a></li><li><a href="Request.html">Request</a></li><li><a href="Response.html">Response</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getContext">getContext</a></li></ul>
+    </nav>
+
+
+    <br clear="both">
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Aug 14 2014 13:04:05 GMT-0700 (Pacific Daylight Time)
+    </footer>
+
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
+</body>
+</html>
