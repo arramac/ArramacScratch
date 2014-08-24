@@ -136,7 +136,7 @@ We would like to draw attention to a few noteworthy aspects of the DocumentDB qu
  
 -	Since DocumentDB SQL works on JSON values, it deals with tree shaped entities instead of rows and columns. Therefore, the language lets one refer to nodes of the tree at any arbitrary depth, like Node1.Node2.Node3…..Nodem, similar to relational SQL referring to two part reference of `<table>.<column>`.   
 -	The language works with schema-less data. Therefore, the type system needs to be bound dynamically. The same expression could yield different types on different documents. The result of a query is a valid JSON value, but is not guaranteed to be of a fixed schema.  
--	DocumentDB only supports strict JSON documents. This means the type system and expressions are restricted to deal only with JSON types. Please refer to [http://www.json.org/] for more details.  
+-	DocumentDB only supports strict JSON documents. This means the type system and expressions are restricted to deal only with JSON types. Please refer to [JSON specification] (http://www.json.org/) for more details.  
 -	A DocumentDB collection is a schema-free container of JSON documents. The relations in data entities within and across documents in a collection are implicitly captured by containment and not by PK-FK relations. This is an important aspect worth pointing out in light of the intra-document joins discussed later in this paper.
 
 #DocumentDB Indexing
