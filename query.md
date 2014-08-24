@@ -18,6 +18,7 @@ To see DocumentDB SQL at work, we’ll begin with a few simple JSON documents an
 Here we have a simple JSON document for the Andersen family, the parents, children (and their pets), address and registration information. The document has strings, numbers, Booleans, arrays and nested properties. 
 
 **Document**  
+
 	{
 	    "id": "AndersenFamily",
 	    "lastName": "Andersen",
@@ -34,6 +35,7 @@ Here we have a simple JSON document for the Andersen family, the parents, childr
 	    "address": { "state": "WA", "county": "King", "city": "seattle" },
 	    "isRegistered": true
 	}
+
 
 Here’s a second document with one subtle difference – givenName and familyName are used instead of firstName and lastName.
 
