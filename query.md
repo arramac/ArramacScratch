@@ -1823,7 +1823,9 @@ The second example shows a more complex query that returns multiple results from
 
 If a query’s results cannot fit within a single page of results, then the REST API returns a continuation token through the `x-ms-continuation-token` response header. Clients can paginate results by including the header in subsequent results. The number of results per page can also be controlled through the `x-ms-max-item-count` number header.
 
-To manage the data consistency policy for queries, use the `x-ms-consistency-level` header like all REST API requests. For session consistency, it is required to also echo the latest `x-ms-session-token` Cookie header in the query request. Note that the queried collection’s indexing policy can also influence the consistency of query results. With the default indexing policy settings, for collections the index is always current with the document contents and query results will match the consistency chosen for data. If the indexing policy is relaxed to Lazy, then queries can return stale results. For more information, refer to the documentation on consistency policies.
+To manage the data consistency policy for queries, use the `x-ms-consistency-level` header like all REST API requests. For session consistency, it is required to also echo the latest `x-ms-session-token` Cookie header in the query request. Note that the queried collection’s indexing policy can also influence the consistency of query results. With the default indexing policy settings, for collections the index is always current with the document contents and query results will match the consistency chosen for data. If the indexing policy is relaxed to Lazy, then queries can return stale results. For more information, refer to [DocumentDB Consistency Levels] [consistency-levels].
+
+If the configured indexing policy on the collection cannot support the specified query, the DocumentDB server returns 400 "Bad Request". This is returned for range queries against paths configured for hash (equality) lookups, and for paths explicitly excluded from indexing. The `x-ms-documentdb-query-enable-scan` header can be specified to allow the query to perform a scan when an index is not available.
 
 ##C# (.NET) SDK
 The .NET SDK supports both LINQ and SQL querying. The following example shows how to perform the simple filter query introduced earlier in this document.
@@ -1904,9 +1906,11 @@ The next sample shows joins, expressed through LINQ SelectMany.
 
 
 
-The .NET client automatically iterates through all the pages of query results in the foreach blocks as shown above. The query options introduced in the REST API section are also available in the .NET SDK using the FeedOptions and FeedResponse classes in the CreateDocumentQuery method. The number of pages can be controlled using the MaxItemCount setting. 
+The .NET client automatically iterates through all the pages of query results in the foreach blocks as shown above. The query options introduced in the REST API section are also available in the .NET SDK using the `FeedOptions` and `FeedResponse` classes in the CreateDocumentQuery method. The number of pages can be controlled using the `MaxItemCount` setting. 
 
-Developers can also explicitly control paging by creating an IDocumentQueryable using the IQueryable object, then by reading the ResponseContinuationToken values and passing them back as RequestContinuationToken in FeedOptions. Refer the .NET samples project for more samples on queries. 
+Developers can also explicitly control paging by creating an `IDocumentQueryable` using the `IQueryable` object, then by reading the` ResponseContinuationToken` values and passing them back as `RequestContinuationToken` in `FeedOptions`. `EnableScanInQuery` can be set to enable scans when the query cannot be supported by the configured indexing policy.
+
+Refer to [DocumentDB .NET samples] (http://code.msdn.microsoft.com/Azure-DocumentDB-NET-Code-6b3da8af#content) for more samples on queries. 
 
 ##JavaScript Server-side API 
 DocumentDB provides a programming model for executing JavaScript based application logic directly on the collections using stored procedures and triggers. The JavaScript logic registered at a collection level can then issue database operations on the operations on the documents of the given collection. These operations are wrapped in ambient ACID transactions.
@@ -1949,6 +1953,7 @@ The following example show how to use the queryDocuments in the JavaScript serve
 1.	[Introduction to Azure DocumentDB] [introduction]
 2.	[DocumentDB SQL Language specification] (http://go.microsoft.com/fwlink/p/?LinkID=510612)
 3.	[DocumentDB .NET samples] (http://code.msdn.microsoft.com/Azure-DocumentDB-NET-Code-6b3da8af#content)
+4.	[DocumentDB Consistency Levels] [consistency-levels]
 3.	ANSI SQL 2011 - [http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=53681](http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=53681)
 4.	JSON [http://json.org/](http://json.org/)
 5.	Javascript Specification [http://www.ecma-international.org/publications/standards/Ecma-262.htm](http://www.ecma-international.org/publications/standards/Ecma-262.htm) 
