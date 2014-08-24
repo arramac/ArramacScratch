@@ -236,7 +236,7 @@ While the above example used an array as the source, an object could also be use
 
 
 #WHERE Clause
-The WHERE clause (**`WHERE <filter_condition>`**) is optional. It specifies the condition(s) that the JSON documents provided by the source must satisfy in order to be included as part of the result. Any JSON document must evaluate the specified conditions to "true" to be considered for the result. The WHERE clause is used by the index layer in order to determine the absolute smallest subset of source documents that can be part of the result. To learn more about how indexing works, please refer to the DocumentDB indexing documentation.  
+The WHERE clause (**`WHERE <filter_condition>`**) is optional. It specifies the condition(s) that the JSON documents provided by the source must satisfy in order to be included as part of the result. Any JSON document must evaluate the specified conditions to "true" to be considered for the result. The WHERE clause is used by the index layer in order to determine the absolute smallest subset of source documents that can be part of the result. 
 
 The following query requests documents that contain a name property and that the property’s value is "AndersenFamily". Any other document that does not have a name property, or where the value does not match "AndersenFamily" is excluded. 
 
