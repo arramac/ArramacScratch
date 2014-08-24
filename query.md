@@ -6,15 +6,15 @@
 Azure DocumentDB supports querying of documents using a familiar SQL (Structured Query Language) over hierarchical JSON documents. DocumentDB is truly schema-free. By virtue of its commitment to the JSON data model directly within the database engine, it provides automatic indexing of JSON documents without requiring explicit schema or creation of secondary indexes. 
 While designing the query language for DocumentDB we had two goals in mind:
 
--	<strong>Embrace SQL</strong> – Instead of inventing a new query language, we wanted to embrace the SQL language. After all, SQL is one of the most familiar and popular query languages. Azure DocumentDB’s SQL language provides a formal programming model for rich queries over JSON documents.
--	<strong>Extend SQL</strong> – As a JSON document database capable of executing JavaScript directly in the database engine, we wanted use JavaScript’s programming model as the foundation for our SQL query language. Azure DocumentDB’s SQL query language is rooted in the JavaScript’s type system, expression evaluation and function invocation. This in-turn provides a natural programming model for relational projections, hierarchical navigation across JSON documents, self joins, invocation of user defined functions (UDFs) written entirely in JavaScript among other features. 
+-	<strong>Embrace SQL</strong> – Instead of inventing a new query language, we wanted to embrace the SQL language. After all, SQL is one of the most familiar and popular query languages. Azure DocumentDB's SQL language provides a formal programming model for rich queries over JSON documents.
+-	<strong>Extend SQL</strong> – As a JSON document database capable of executing JavaScript directly in the database engine, we wanted use JavaScript's programming model as the foundation for our SQL query language. Azure DocumentDB's SQL query language is rooted in the JavaScript's type system, expression evaluation and function invocation. This in-turn provides a natural programming model for relational projections, hierarchical navigation across JSON documents, self joins, invocation of user defined functions (UDFs) written entirely in JavaScript among other features. 
 
 We believe that these capabilities are key to reducing the friction between the application and the database and are crucial for developer productivity.
 
 In this tutorial, we introduce the DocumentDB query language capabilities and grammar through examples. We also look at how one can query DocumentDB using the REST API and SDKs (including LINQ).
 
 #Getting Started
-To see DocumentDB SQL at work, we’ll begin with a few simple JSON documents and walk through some simple queries against it. Consider these two JSON documents about two families. Note that with DocumentDB, we do not need to create any schemas or secondary indices explicitly. We simply need to insert the JSON documents to a DocumentDB collection and subsequently query. 
+To see DocumentDB SQL at work, we'll begin with a few simple JSON documents and walk through some simple queries against it. Consider these two JSON documents about two families. Note that with DocumentDB, we do not need to create any schemas or secondary indices explicitly. We simply need to insert the JSON documents to a DocumentDB collection and subsequently query. 
 Here we have a simple JSON document for the Andersen family, the parents, children (and their pets), address and registration information. The document has strings, numbers, Booleans, arrays and nested properties. 
 
 **Document**  
@@ -37,7 +37,7 @@ Here we have a simple JSON document for the Andersen family, the parents, childr
 	}
 
 
-Here’s a second document with one subtle difference – `givenName` and `familyName` are used instead of `firstName` and `lastName`.
+Here's a second document with one subtle difference – `givenName` and `familyName` are used instead of `firstName` and `lastName`.
 
 **Document**  
 
@@ -69,7 +69,7 @@ Here’s a second document with one subtle difference – `givenName` and `famil
 
 
 
-Now let’s try a few queries against this data to understand some of the key aspects of DocumentDB SQL. For example, the following query will return the documents where the id field matches `AndersenFamily`. Since it’s a `SELECT *`, the output of the query is the complete JSON document:
+Now let's try a few queries against this data to understand some of the key aspects of DocumentDB SQL. For example, the following query will return the documents where the id field matches `AndersenFamily`. Since it's a `SELECT *`, the output of the query is the complete JSON document:
 
 **Query**
 
@@ -97,7 +97,7 @@ Now let’s try a few queries against this data to understand some of the key as
 	}]
 
 
-Now consider the case where we need to reformat the JSON output in a different shape. This query projects a new JSON object with 2 selected fields, Name and City, when the address’ city has the same name as the state. In this case, "NY, NY" matches.
+Now consider the case where we need to reformat the JSON output in a different shape. This query projects a new JSON object with 2 selected fields, Name and City, when the address' city has the same name as the state. In this case, "NY, NY" matches.
 
 **Query**	
 
@@ -132,7 +132,7 @@ The next query returns all the given names of children in the family whose id ma
 	]
 
 
-We would like to draw attention to a few noteworthy aspects of the DocumentDB query language through the examples we’ve seen so far:  
+We would like to draw attention to a few noteworthy aspects of the DocumentDB query language through the examples we've seen so far:  
  
 -	Since DocumentDB SQL works on JSON values, it deals with tree shaped entities instead of rows and columns. Therefore, the language lets one refer to nodes of the tree at any arbitrary depth, like `Node1.Node2.Node3…..Nodem`, similar to relational SQL referring to two part reference of `<table>.<column>`.   
 -	The language works with schema-less data. Therefore, the type system needs to be bound dynamically. The same expression could yield different types on different documents. The result of a query is a valid JSON value, but is not guaranteed to be of a fixed schema.  
@@ -141,7 +141,7 @@ We would like to draw attention to a few noteworthy aspects of the DocumentDB qu
 
 #DocumentDB Indexing
 
-Before we get into the DocumentDB SQL language, it is worth exploring DocumentDB’s indexing design. 
+Before we get into the DocumentDB SQL language, it is worth exploring DocumentDB's indexing design. 
 
 The purpose of database indexes is to serve queries in their various forms and shapes with minimum resource consumption (like CPU, I/O) while providing good throughput and low latencies. Often, the choice of the right index(s) for querying a database requires much planning and experimentation. This approach poses a challenge for schema-less databases where the data doesn’t conform to a strict schema and evolves rapidly. 
 
@@ -169,7 +169,7 @@ Every query consists of a **SELECT** clause and optional **FROM** and **WHERE** 
 
 
 #FROM Clause
-The **`FROM <from_specification>`** clause is optional unless the source is filtered/projected later in the query. The purpose of this clause is to specify the data source upon which the query must operate. Commonly the whole collection is the source, but one can specify a subset of the collection instead. 
+The `FROM <from_specification>` clause is optional unless the source is filtered/projected later in the query. The purpose of this clause is to specify the data source upon which the query must operate. Commonly the whole collection is the source, but one can specify a subset of the collection instead. 
 
 A query like `SELECT * FROM Families` indicates that the entire Families collection is the source over which to enumerate. A special identifier **ROOT** can be used to represent the collection instead of using the collection name. 
 The binding rules that are enforced per query are the following:
@@ -310,7 +310,7 @@ The unary operators **+,-, ~ and NOT** are also supported, and can be used insid
 
 
 
-In addition to binary & unary operators, property references are also allowed. For example, `SELECT * FROM Families f WHERE f.isRegistered` would return the JSON documents containing the property `isRegistered` and the property’s value is equal to the JSON `true` value. Any other values (false, null, Undefined, <number>, <string>, <object>, <array> etc.) will lead to the source document being excluded from the result. 
+In addition to binary & unary operators, property references are also allowed. For example, `SELECT * FROM Families f WHERE f.isRegistered` would return the JSON documents containing the property `isRegistered` and the property's value is equal to the JSON `true` value. Any other values (false, null, Undefined, <number>, <string>, <object>, <array> etc.) will lead to the source document being excluded from the result. 
 
 ##Equality and Comparison operators
 The following table shows the result of equality comparisons in DocumentDB SQL between any two JSON types.
@@ -532,7 +532,7 @@ For other comparison operators like >, >=, !=, < and <=
 -	Comparison across types results in Undefined.
 -	Comparison between two objects or two arrays results in Undefined.   
 
-If the result of the scalar expression in the filter is Undefined, the corresponding document would not be included in the result, since Undefined doesn’t logically equate to "true".
+If the result of the scalar expression in the filter is Undefined, the corresponding document would not be included in the result, since Undefined doesn't logically equate to "true".
 
 ##Logical (AND, OR and NOT) operators
 These operate on Boolean values. The logical truth tables for these operators are as shown below.
@@ -777,7 +777,7 @@ These operate on Boolean values. The logical truth tables for these operators ar
 </table>
 
 #SELECT Clause
-The SELECT clause (**`SELECT <select_list>`**) is mandatory and specifies what values will be retrieved from the query, just like in ANSI-SQL. The subset that’s been filtered on top of the source documents are passed onto the projection phase, where the specified JSON values are retrieved and a new JSON object is constructed, for each input passed onto it. 
+The SELECT clause (**`SELECT <select_list>`**) is mandatory and specifies what values will be retrieved from the query, just like in ANSI-SQL. The subset that's been filtered on top of the source documents are passed onto the projection phase, where the specified JSON values are retrieved and a new JSON object is constructed, for each input passed onto it. 
 
 The example below shows a typical SELECT query: 
 
@@ -834,7 +834,7 @@ Projection also supports JSON expressions as shown in the following example.
 	}]
 
 
-Let’s look at the role of `$1` here. The `SELECT` clause needs to create a JSON object and since no key is provided, we use implicit argument variable names starting with `$1`. For example, this query returns 2 implicit argument variables, labeled `$1` and `$2`.
+Let's look at the role of `$1` here. The `SELECT` clause needs to create a JSON object and since no key is provided, we use implicit argument variable names starting with `$1`. For example, this query returns 2 implicit argument variables, labeled `$1` and `$2`.
 
 **Query**
 
@@ -857,7 +857,7 @@ Let’s look at the role of `$1` here. The `SELECT` clause needs to create a JSO
 
 
 ##Aliasing
-Now let’s extend the example above with explicit aliasing of values. **AS** is the keyword used for aliasing. Note that it’s optional as shown while projecting the second value as `NameInfo`. 
+Now let's extend the example above with explicit aliasing of values. **AS** is the keyword used for aliasing. Note that it's optional as shown while projecting the second value as `NameInfo`. 
 
 In case a query has two properties with the same name, aliasing must be used to rename one or both of the properties so that they are disambiguated in the projected result.
 
@@ -883,7 +883,7 @@ In case a query has two properties with the same name, aliasing must be used to 
 
 
 ##Scalar Expressions
-In addition to property references, the **SELECT** clause also supports scalar expressions like constants, arithmetic expressions, logical expressions etc. For example, here’s a simple "Hello World" query.
+In addition to property references, the **SELECT** clause also supports scalar expressions like constants, arithmetic expressions, logical expressions etc. For example, here's a simple "Hello World" query.
 
 **Query**
 
@@ -896,7 +896,7 @@ In addition to property references, the **SELECT** clause also supports scalar e
 	}]
 
 
-Here’s a more complex example that uses a scalar expression:
+Here's a more complex example that uses a scalar expression:
 
 **Query**
 
@@ -1034,7 +1034,7 @@ We support the special operator (*) to project the document as-is. When used, it
 
 #Advanced Concepts
 ##Iteration
-We added a new construct via the **IN** keyword in DocumentDB SQL to provide support for iterating over JSON arrays. The FROM source provides support for iteration. Let’s start with the following example:
+We added a new construct via the **IN** keyword in DocumentDB SQL to provide support for iterating over JSON arrays. The FROM source provides support for iteration. Let's start with the following example:
 
 **Query**
 
@@ -1068,7 +1068,7 @@ We added a new construct via the **IN** keyword in DocumentDB SQL to provide sup
 	  ]
 	]
 
-Now let’s look at another query that performs iteration over children in the collection. Note the difference in the output array. This example splits `children` and flattens the results into a single array.  
+Now let's look at another query that performs iteration over children in the collection. Note the difference in the output array. This example splits `children` and flattens the results into a single array.  
 
 **Query**
 
@@ -1113,7 +1113,7 @@ This can be further used to filter on each individual entry of the array like in
 	}]
 
 ##Joins
-In a relational database, the need to join across tables is very important. It’s the logical corollary to designing normalized schemas. Contrary to this, DocumentDB deals with denormalized data model of schema-free documents. This is the logical equivalent of a "self-join".
+In a relational database, the need to join across tables is very important. It's the logical corollary to designing normalized schemas. Contrary to this, DocumentDB deals with denormalized data model of schema-free documents. This is the logical equivalent of a "self-join".
 
 The syntax that is supported in the language is <from_source1> JOIN <from_source2> JOIN ... JOIN <from_sourceN>. Overall, this would return a set of **N**-tuples (tuple with **N** values). Each tuple will have values produced by iterating all collection aliases over their respective sets. In other words, this is a full cross product of the sets participating in the join.
 
@@ -1131,7 +1131,7 @@ The following examples show how JOINs works. In the example below, the result is
 	}]
 
 
-In the following example, the join is between the document root and the `children` sub-root. It’s a cross product between two JSON objects. The fact that children is an array is not effective in the JOIN since we are dealing with a single root that is the children array. Hence the result contains only two results, since the cross product of each document with the array yields exactly only one document.
+In the following example, the join is between the document root and the `children` sub-root. It's a cross product between two JSON objects. The fact that children is an array is not effective in the JOIN since we are dealing with a single root that is the children array. Hence the result contains only two results, since the cross product of each document with the array yields exactly only one document.
 
 **Query**
 
@@ -1183,7 +1183,7 @@ The first thing to note is that the `from_source` of the **JOIN** here is an ite
 
 The first document (`AndersenFamily`) contains only one child element, so the result set contains only a single object corresponding to this document. The second document (`WakefieldFamily`) contains two children. So, the cross product produces a separate object for each child, thereby resulting in two objects, one for each child corresponding to this document. Note that the root fields in both these documents will be same, just as you would expect in a cross product.
 
-The real utility of the JOIN is to form tuples from the cross-product in a shape that’s otherwise difficult to project. Furthermore, as we will see in the example below, one could filter on the combination of a tuple that lets’ the user chose a condition satisfied by the tuples overall.
+The real utility of the JOIN is to form tuples from the cross-product in a shape that's otherwise difficult to project. Furthermore, as we will see in the example below, one could filter on the combination of a tuple that lets' the user chose a condition satisfied by the tuples overall.
 
 **Query**
 
@@ -1327,7 +1327,7 @@ The UDF can also be used inside a filter as shown in the example below:
 
 In essence, UDFs are valid scalar expressions and can be used in both projections and filters. 
 
-To expand on the power of UDFs, let’s look at another example with conditional logic:
+To expand on the power of UDFs, let's look at another example with conditional logic:
 
 	   UserDefinedFunction seaLevelUdf = new UserDefinedFunction()
 	   {
@@ -1371,7 +1371,7 @@ Below is an example that exercises the UDF.
 
 As the above examples show cases, UDFs integrates the power of JavaScript language with the DocumentDB SQL to provide rich programmable interface to do complex procedural, conditional logic with the help of inbuilt JavaScript runtime capabilities.
 
-DocumentDB SQL provides the arguments to the UDFs for each document in the source at the current stage (WHERE clause or SELECT clause) of processing the UDF. The result is incorporated in the overall execution pipeline seamlessly. If the properties referred to by the UDF parameters are not available in the JSON value, the parameter is considered as Undefined and hence the UDF invocation is entirely skipped. Similarly if the result of the UDF is Undefined, it’s not included in the result. 
+DocumentDB SQL provides the arguments to the UDFs for each document in the source at the current stage (WHERE clause or SELECT clause) of processing the UDF. The result is incorporated in the overall execution pipeline seamlessly. If the properties referred to by the UDF parameters are not available in the JSON value, the parameter is considered as Undefined and hence the UDF invocation is entirely skipped. Similarly if the result of the UDF is Undefined, it's not included in the result. 
 
 In summary, UDFs are great tools to do complex business logic as part of the query.
 
@@ -1380,7 +1380,7 @@ DocumentDB, by the virtue of being a JSON database, draws parallels with JavaScr
 
 In DocumentDB SQL query language, unlike in traditional SQL, the types of values are often not known until the values are actually retrieved from database. In order to efficiently execute   queries, most of the operators have strict type requirements. 
 
-DocumentDB SQL doesn’t perform implicit conversions unlike JavaScript. For instance, a query like `SELECT * FROM Person p WHERE p.Age = 21` matches documents which contain Age property whose value is 21. Any other document whose Age property matches string "21", or
+DocumentDB SQL doesn't perform implicit conversions unlike JavaScript. For instance, a query like `SELECT * FROM Person p WHERE p.Age = 21` matches documents which contain Age property whose value is 21. Any other document whose Age property matches string "21", or
 other possibly infinite variations like "021", "21.0", "0021", "00021" etc. will not be matched. 
 This is in contrast to the JavaScript where the string values are implicitly casted to number (based on operator, ex: ==). This choice is crucial for efficient Index matching in DocumentDB SQL. 
 
@@ -1476,7 +1476,7 @@ The mapping between .NET objects and JSON documents is natural - each data membe
 
 
 ##LINQ to SQL Translation
-The DocumentDB query provider performs a best effort mapping from a LINQ query into a DocumentDB SQL query. In the following description, we assume the reader’s basic familiarity of LINQ.
+The DocumentDB query provider performs a best effort mapping from a LINQ query into a DocumentDB SQL query. In the following description, we assume the reader's basic familiarity of LINQ.
 
 First, for the type system, we support all JSON primitive types – numeric types, bool, string and null. Only these JSON types are supported. The following scalar expressions are supported.
 
@@ -1704,11 +1704,11 @@ Azure DocumentDB exposes resources via REST API that can be called by any langua
 
 The following examples show how to create a query and submit it against a DocumentDB database account.
 ##REST API
-DocumentDB offers an open RESTful programming model over HTTP. Database accounts can be provisioned using an Azure subscription. DocumentDB’s resource model consists of a sets of resources under a database account, each addressable via a logical and stable URI. A set of resources is referred to as a feed in this document. A database account consists of a set of databases, each containing multiple collections, each of which in-turn contain documents, UDFs and other resource types.
+DocumentDB offers an open RESTful programming model over HTTP. Database accounts can be provisioned using an Azure subscription. DocumentDB's resource model consists of a sets of resources under a database account, each addressable via a logical and stable URI. A set of resources is referred to as a feed in this document. A database account consists of a set of databases, each containing multiple collections, each of which in-turn contain documents, UDFs and other resource types.
 
 The basic interaction model with these resources is through the HTTP verbs GET, PUT, POST and DELETE with their standard interpretation. The POST verb is used for creation of a new resource, for executing a stored procedure or for issuing a DocumentDB query. Queries are always read only operations with no side-effects.
 
-The following examples show POST for a DocumentDB query made against a collection containing the two sample documents we’ve reviewed so far. The query has a simple filter on the JSON name property. Note the use of the `x-ms-documentdb-isquery` and Content-Type: `application/sql` headers to denote that the operation is a query.
+The following examples show POST for a DocumentDB query made against a collection containing the two sample documents we've reviewed so far. The query has a simple filter on the JSON name property. Note the use of the `x-ms-documentdb-isquery` and Content-Type: `application/sql` headers to denote that the operation is a query.
 
 
 **Request**
@@ -1821,9 +1821,9 @@ The second example shows a more complex query that returns multiple results from
 	}
 
 
-If a query’s results cannot fit within a single page of results, then the REST API returns a continuation token through the `x-ms-continuation-token` response header. Clients can paginate results by including the header in subsequent results. The number of results per page can also be controlled through the `x-ms-max-item-count` number header.
+If a query's results cannot fit within a single page of results, then the REST API returns a continuation token through the `x-ms-continuation-token` response header. Clients can paginate results by including the header in subsequent results. The number of results per page can also be controlled through the `x-ms-max-item-count` number header.
 
-To manage the data consistency policy for queries, use the `x-ms-consistency-level` header like all REST API requests. For session consistency, it is required to also echo the latest `x-ms-session-token` Cookie header in the query request. Note that the queried collection’s indexing policy can also influence the consistency of query results. With the default indexing policy settings, for collections the index is always current with the document contents and query results will match the consistency chosen for data. If the indexing policy is relaxed to Lazy, then queries can return stale results. For more information, refer to [DocumentDB Consistency Levels] [consistency-levels].
+To manage the data consistency policy for queries, use the `x-ms-consistency-level` header like all REST API requests. For session consistency, it is required to also echo the latest `x-ms-session-token` Cookie header in the query request. Note that the queried collection's indexing policy can also influence the consistency of query results. With the default indexing policy settings, for collections the index is always current with the document contents and query results will match the consistency chosen for data. If the indexing policy is relaxed to Lazy, then queries can return stale results. For more information, refer to [DocumentDB Consistency Levels] [consistency-levels].
 
 If the configured indexing policy on the collection cannot support the specified query, the DocumentDB server returns 400 "Bad Request". This is returned for range queries against paths configured for hash (equality) lookups, and for paths explicitly excluded from indexing. The `x-ms-documentdb-query-enable-scan` header can be specified to allow the query to perform a scan when an index is not available.
 
@@ -1940,7 +1940,7 @@ The following example show how to use the queryDocuments in the JavaScript serve
 	                    // Replace the author name for all documents that satisfied the query.
 	                    for (var i = 0; i < matchingDocuments.length; i++) {
 	                        matchingDocuments[i].author = "George R. R. Martin";
-	                        // we don’t need to execute a callback because they are in parallel
+	                        // we don't need to execute a callback because they are in parallel
 	                        collectionManager.replaceDocument(matchingDocuments[i]._self,
 	                            matchingDocuments[i]);
 	                    }
